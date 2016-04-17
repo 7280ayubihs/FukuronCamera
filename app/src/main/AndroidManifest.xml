@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="jp.co.jex.fukuroncamera">
+
+    <uses-permission android:name="android.permission.CAMERA" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+
+    <application
+        android:allowBackup="true"
+        android:icon="@mipmap/ic_fukuron"
+        android:label="@string/application_label"
+        android:supportsRtl="true"
+        android:theme="@style/AppTheme"
+        android:screenOrientation="landscape">
+        <activity
+            android:name=".MainActivity"
+            android:label="@string/activity_label"/>
+        <activity
+            android:name=".CameraActivity"
+            android:label="@string/activity_label"
+            android:screenOrientation="landscape">
+            <intent-filter android:label="@string/intent_filter_label">
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+        <activity
+            android:name=".ImageViewActivity"
+            android:label="@string/activity_label"
+            android:screenOrientation="landscape"/>
+        <activity
+            android:name=".SettingsActivity"
+            android:label="設定"
+            android:screenOrientation="landscape"/>
+    </application>
+
+</manifest>

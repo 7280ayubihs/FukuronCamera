@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="size_entries">
+        <item>小</item>
+        <item>中</item>
+        <item>大</item>
+    </string-array>
+    <string-array name="size_entry_values">
+        <item>2.0</item>
+        <item>2.5</item>
+        <item>3.0</item>
+    </string-array>
+</resources>

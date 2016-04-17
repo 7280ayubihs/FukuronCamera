@@ -1,0 +1,23 @@
+<resources>
+    <string name="app_name">FukuronCamera</string>
+    <string name="application_label">"フクロン カメラ"</string>
+    <string name="intent_filter_label">"カメラ"</string>
+    <string name="activity_label">"フクロン カメラ"</string>
+
+    <string name="intro_message">
+        <![CDATA[
+
+
+            This sample demonstrates the basic use of Camera2 API. Check the source code to see how
+            you can display camera preview and take pictures.
+
+
+        ]]>
+    </string>
+    <string name="picture">Picture</string>
+    <string name="description_info">Info</string>
+    <string name="request_camera_permission">"Fukuron Camera needs camera permission."</string>
+    <string name="request_write_external_storage_permission">"Fukuron Camera needs write external storage permission."</string>
+    <string name="camera_error">"This device doesn\'t support Camera2 API."</string>
+    <string name="settings">"設定"</string>
+</resources>

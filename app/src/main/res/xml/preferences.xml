@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+    <ListPreference
+        android:key="size"
+        android:title="フクロンのサイズ"
+        android:entries="@array/size_entries"
+        android:entryValues="@array/size_entry_values"
+        android:defaultValue="小"/>
+</PreferenceScreen>
