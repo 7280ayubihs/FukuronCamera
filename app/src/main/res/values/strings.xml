@@ -20,4 +20,5 @@
     <string name="request_write_external_storage_permission">"Fukuron Camera needs write external storage permission."</string>
     <string name="camera_error">"This device doesn\'t support Camera2 API."</string>
     <string name="settings">"設定"</string>
+    <string name="default_summary">"未設定"</string>
 </resources>

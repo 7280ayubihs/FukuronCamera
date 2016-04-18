@@ -7,7 +7,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.widget.ImageView;
 
 public class ImageViewActivity extends AppCompatActivity
-        implements FaceDetectorAsyncTask.onProcessFinishListener {
+        implements FaceDetectorAsyncTask.ProcessFinishListener {
 
     private static final String TAG = ImageViewActivity.class.getSimpleName();
 

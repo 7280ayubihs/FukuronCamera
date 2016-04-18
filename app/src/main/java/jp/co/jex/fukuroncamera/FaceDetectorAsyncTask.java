@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.ContentResolver;
 import android.content.ContentValues;
+import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
@@ -12,6 +13,7 @@ import android.graphics.RectF;
 import android.media.FaceDetector;
 import android.os.AsyncTask;
 import android.os.Environment;
+import android.preference.PreferenceManager;
 import android.provider.MediaStore;
 
 import java.io.File;
@@ -22,25 +24,46 @@ import java.util.Date;
 import java.util.Locale;
 
 public class FaceDetectorAsyncTask extends AsyncTask<Void, Void, Bitmap> {
+
+    /** android.util.Log class 用の tag */
     private static final String TAG = FaceDetectorAsyncTask.class.getSimpleName();
 
-    /** フクロン画像の倍率??? */
-    private static final float MAGNIFICATION = 3.0f;
+    /** フクロン画像の倍率のデフォルト値 */
+    private static final String DEFAULT_MAGNIFICATION = "3.0f";
 
+    /** プログレスダイアログを表示する Activity */
     private Activity mActivity;
-    private ProgressDialog mProgressDialog;
-    private String mMessage;
-    private Bitmap mBitmap;
-    private onProcessFinishListener mOnProcessFinishListener;
 
+    /** プログレスダイアログに表示するメッセージ */
+    private String mMessage;
+
+    /** プログレスダイアログ */
+    private ProgressDialog mProgressDialog;
+
+    /** 処理完了後のコールバック */
+    private ProcessFinishListener mProcessFinishListener;
+
+    /** 処理する Bitmap */
+    private Bitmap mBitmap;
+
+    /***
+     * コンストラクタ
+     * @param activity プログレスダイアログを表示する Activity
+     * @param message プログレスダイアログに表示するメッセージ
+     * @param bitmap 処理する Bitmap
+     */
     public FaceDetectorAsyncTask(Activity activity, String message, Bitmap bitmap) {
         mActivity = activity;
         mMessage = message;
         mBitmap = bitmap;
     }
 
-    public void setOnProcessFinishListener(onProcessFinishListener listener) {
-        mOnProcessFinishListener = listener;
+    /***
+     * 処理完了後のコールバックを登録します。
+     * @param listener 処理完了後のコールバック
+     */
+    public void setOnProcessFinishListener(ProcessFinishListener listener) {
+        mProcessFinishListener = listener;
     }
 
     @Override
@@ -70,6 +93,10 @@ public class FaceDetectorAsyncTask extends AsyncTask<Void, Void, Bitmap> {
             return null;
         }
 
+        // プリファレンスから倍率を読み込む
+        SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(mActivity);
+        float magnification = Float.parseFloat(sp.getString("size", DEFAULT_MAGNIFICATION));
+
         // 検出した顔をフクロン画像に置き換える
         Canvas canvas = new Canvas(baseBitmap);
         for (FaceDetector.Face face: faces) {
@@ -79,10 +106,10 @@ public class FaceDetectorAsyncTask extends AsyncTask<Void, Void, Bitmap> {
                 face.getMidPoint(midPoint);
 
                 RectF r = new RectF();
-                r.left = midPoint.x - eyesDistance * MAGNIFICATION;
-                r.top = midPoint.y - eyesDistance * MAGNIFICATION;
-                r.right = midPoint.x + eyesDistance * MAGNIFICATION;
-                r.bottom = midPoint.y + eyesDistance * MAGNIFICATION;
+                r.left = midPoint.x - eyesDistance * magnification;
+                r.top = midPoint.y - eyesDistance * magnification;
+                r.right = midPoint.x + eyesDistance * magnification;
+                r.bottom = midPoint.y + eyesDistance * magnification;
 
                 Bitmap temp = Bitmap.createScaledBitmap(fukuron, (int) r.width(), (int) r.height(), false);
                 canvas.drawBitmap(temp, r.left, r.top, null);
@@ -98,7 +125,7 @@ public class FaceDetectorAsyncTask extends AsyncTask<Void, Void, Bitmap> {
         if (mProgressDialog.isShowing()) {
             mProgressDialog.dismiss();
         }
-        mOnProcessFinishListener.onProcessFinish(bitmap);
+        mProcessFinishListener.onProcessFinish(bitmap);
     }
 
     /** bitmap を Pictures フォルダに保存する */
@@ -126,8 +153,9 @@ public class FaceDetectorAsyncTask extends AsyncTask<Void, Void, Bitmap> {
         }
     }
 
-    /** 保存完了後のコールバック */
-    public interface onProcessFinishListener {
+    /** 非同期処理が完了したさいのコールバック */
+    public interface ProcessFinishListener {
+        /** 非同期処理が完了した際に呼ばれます。 */
         void onProcessFinish(Bitmap bitmap);
     }
 }
