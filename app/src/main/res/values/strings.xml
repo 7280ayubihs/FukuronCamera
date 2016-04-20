@@ -21,4 +21,5 @@
     <string name="camera_error">"This device doesn\'t support Camera2 API."</string>
     <string name="settings">"設定"</string>
     <string name="default_summary">"未設定"</string>
+    <string name="face_detector_dialog_message">"フクロン中..."</string>
 </resources>

@@ -14,26 +14,32 @@ public class ImageViewActivity extends AppCompatActivity
     private String mPathName;
     private ImageView mImageView;
 
+    private boolean mFaceDetectorExecuted;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_image_view);
         mImageView = (ImageView) findViewById(R.id.image_view);
         mPathName = getIntent().getStringExtra("path");
+        mFaceDetectorExecuted = false;
     }
 
     @Override
     protected void onResume() {
         super.onResume();
+        if (!mFaceDetectorExecuted) {
+            mFaceDetectorExecuted = true;
 
-        // set bitmap
-        Bitmap bitmap = BitmapFactory.decodeFile(mPathName);
-        mImageView.setImageBitmap(bitmap);
+            // set bitmap
+            Bitmap bitmap = BitmapFactory.decodeFile(mPathName);
+            mImageView.setImageBitmap(bitmap);
 
-        // 顔認識処理をバックグラウンドで実行
-        FaceDetectorAsyncTask task = new FaceDetectorAsyncTask(this, "フクロン中...", bitmap);
-        task.setOnProcessFinishListener(this);
-        task.execute();
+            // 顔認識処理をバックグラウンドで実行
+            FaceDetectorAsyncTask task = new FaceDetectorAsyncTask(this, getString(R.string.face_detector_dialog_message), bitmap);
+            task.setOnProcessFinishListener(this);
+            task.execute();
+        }
     }
 
     @Override

@@ -399,6 +399,7 @@ public class CameraActivity extends AppCompatActivity implements View.OnClickLis
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_camera);
+        findViewById(R.id.control).setOnClickListener(this);
         findViewById(R.id.picture).setOnClickListener(this);
         findViewById(R.id.info).setOnClickListener(this);
         mTextureView = (AutoFitTextureView) findViewById(R.id.texture);
@@ -921,26 +922,17 @@ public class CameraActivity extends AppCompatActivity implements View.OnClickLis
     @Override
     public void onClick(View view) {
         switch (view.getId()) {
-            case R.id.picture: {
+            case R.id.control:
+            case R.id.picture:
                 takePicture();
                 break;
-            }
-            case R.id.info: {
-//                Activity activity = getActivity();
-//                if (null != activity) {
-//                new AlertDialog.Builder(activity)
-                    new AlertDialog.Builder(this)
-                            .setMessage(R.string.intro_message)
-                            .setPositiveButton(android.R.string.ok, null)
-                            .show();
-//                }
+            case R.id.info:
+                new AlertDialog.Builder(this)
+                        .setMessage(R.string.intro_message)
+                        .setPositiveButton(android.R.string.ok, null)
+                        .show();
                 break;
-            }
         }
-    }
-
-    public void startImageView() {
-
     }
 
     /**

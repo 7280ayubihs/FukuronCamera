@@ -29,7 +29,7 @@ public class FaceDetectorAsyncTask extends AsyncTask<Void, Void, Bitmap> {
     private static final String TAG = FaceDetectorAsyncTask.class.getSimpleName();
 
     /** フクロン画像の倍率のデフォルト値 */
-    private static final String DEFAULT_MAGNIFICATION = "3.0f";
+    private static final String DEFAULT_MAGNIFICATION = "3.0";
 
     /** プログレスダイアログを表示する Activity */
     private Activity mActivity;
