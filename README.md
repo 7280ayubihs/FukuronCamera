@@ -12,7 +12,14 @@ Android 6.0 (推奨)
 
 ## 起動確認端末（随時、募集中）
 Nexus 7 2013  
+Xperia Z3 SO-01G  
+Xperia Z3 SOL26  
 Xperia Z5 SO-01H  
+
+## 不具合確認端末
+### プレビューが表示されない（調査中）
+Xperia Z3 SO-01G  
+Xperia Z3 SOL26
 
 ## 作成者
 Shibuya Syuta (7280ayubihs@gmail.com)
