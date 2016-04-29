@@ -27,7 +27,8 @@ public class SettingsActivity extends AppCompatActivity {
             addPreferencesFromResource(R.xml.preferences);
 
             // Summary に現在値を設定
-            setListPreferenceSummary("size");
+            setListPreferenceSummary(getString(R.string.size_of_fukuron_key));
+            setListPreferenceSummary(getString(R.string.number_of_fukuron_key));
         }
 
         @Override
@@ -46,7 +47,10 @@ public class SettingsActivity extends AppCompatActivity {
 
         @Override
         public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key) {
-            if(key.equals("size")) {
+            if (key.equals(getString(R.string.size_of_fukuron_key))) {
+                setListPreferenceSummary(key);
+            }
+            if (key.equals(getString(R.string.number_of_fukuron_key))) {
                 setListPreferenceSummary(key);
             }
         }

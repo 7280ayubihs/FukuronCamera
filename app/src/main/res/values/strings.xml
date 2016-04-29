@@ -22,4 +22,30 @@
     <string name="settings">"設定"</string>
     <string name="default_summary">"未設定"</string>
     <string name="face_detector_dialog_message">"フクロン中..."</string>
+
+
+    <!-- Preference 'size_of_fukuron' -->
+    <string name="size_of_fukuron_key">"size_of_fukuron"</string>
+    <string name="size_of_fukuron_title">"フクロンのサイズ"</string>
+    <string name="size_of_fukuron_entries_small">"小さい"</string>
+    <string name="size_of_fukuron_entries_small_value">"2.0"</string>
+    <string name="size_of_fukuron_entries_medium">"普通"</string>
+    <string name="size_of_fukuron_entries_medium_value">"2.5"</string>
+    <string name="size_of_fukuron_entries_large">"大きい"</string>
+    <string name="size_of_fukuron_entries_large_value">"3.0"</string>
+    <string name="size_of_fukuron_default_value">@string/size_of_fukuron_entries_medium_value</string>
+
+    <!-- Preference 'number_of_fukuron' -->
+    <string name="number_of_fukuron_key">"number_of_fukuron"</string>
+    <string name="number_of_fukuron_title">"フクロンの数"</string>
+    <string name="number_of_fukuron_entries_few">"少ない"</string>
+    <string name="number_of_fukuron_entries_few_value">"4"</string>
+    <string name="number_of_fukuron_entries_normal">"普通"</string>
+    <string name="number_of_fukuron_entries_normal_value">"8"</string>
+    <string name="number_of_fukuron_entries_many">"多い"</string>
+    <string name="number_of_fukuron_entries_many_value">"16"</string>
+    <string name="number_of_fukuron_entries_infinity">"無限"</string>
+    <string name="number_of_fukuron_entries_infinity_value">"32"</string>
+    <string name="number_of_fukuron_default_value">@string/number_of_fukuron_entries_normal_value</string>
+
 </resources>

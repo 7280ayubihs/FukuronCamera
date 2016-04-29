@@ -8,8 +8,8 @@ import android.widget.ImageView;
 
 public class ImageViewActivity extends AppCompatActivity
         implements FaceDetectorAsyncTask.ProcessFinishListener {
-
     private static final String TAG = ImageViewActivity.class.getSimpleName();
+    private static final int DEFAULT_BITMAP_HEIGHT = 720;
 
     private String mPathName;
     private ImageView mImageView;
@@ -32,7 +32,7 @@ public class ImageViewActivity extends AppCompatActivity
             mFaceDetectorExecuted = true;
 
             // set bitmap
-            Bitmap bitmap = BitmapFactory.decodeFile(mPathName);
+            Bitmap bitmap = resizeBitmap(BitmapFactory.decodeFile(mPathName));
             mImageView.setImageBitmap(bitmap);
 
             // 顔認識処理をバックグラウンドで実行
@@ -48,6 +48,21 @@ public class ImageViewActivity extends AppCompatActivity
             mImageView.setImageBitmap(bitmap);
         } else {
             finish();
+        }
+    }
+
+    /**
+     * Bitmap をリサイズする
+     */
+    private Bitmap resizeBitmap(Bitmap bitmap) {
+        int srcWidth = bitmap.getWidth();
+        int srcHeight = bitmap.getHeight();
+        if (DEFAULT_BITMAP_HEIGHT < srcHeight) {
+            int dstWidth = (srcWidth * DEFAULT_BITMAP_HEIGHT) / srcHeight;
+            int dstHeight = DEFAULT_BITMAP_HEIGHT;
+            return Bitmap.createScaledBitmap(bitmap, dstWidth, dstHeight, false);
+        } else {
+            return bitmap;
         }
     }
 }

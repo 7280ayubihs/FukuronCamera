@@ -28,6 +28,8 @@ public class FaceDetectorAsyncTask extends AsyncTask<Void, Void, Bitmap> {
     /** android.util.Log class 用の tag */
     private static final String TAG = FaceDetectorAsyncTask.class.getSimpleName();
 
+    private static final int EKURON = 2;
+
     /** フクロン画像の倍率のデフォルト値 */
     private static final String DEFAULT_MAGNIFICATION = "3.0";
 
@@ -79,23 +81,28 @@ public class FaceDetectorAsyncTask extends AsyncTask<Void, Void, Bitmap> {
         // bitmap を編集可能な 16bit深度としてコピー
         Bitmap baseBitmap = mBitmap.copy(Bitmap.Config.RGB_565, true);
 
+        // プリファレンスから倍率を読み込む
+        SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(mActivity);
+        float magnification = Float.parseFloat(sp.getString(
+                mActivity.getString(R.string.size_of_fukuron_key),
+                mActivity.getString(R.string.size_of_fukuron_default_value)));
+        int num = 8;
+
         // 顔認識開始
-        FaceDetector.Face faces[] = new FaceDetector.Face[8];
+        FaceDetector.Face faces[] = new FaceDetector.Face[num];
         FaceDetector detector = new FaceDetector(baseBitmap.getWidth(), baseBitmap.getHeight(), faces.length);
         detector.findFaces(baseBitmap, faces);
 
         // フクロン画像を読み込む
         Bitmap fukuron;
+        Bitmap ekuron;
         try {
             fukuron = BitmapFactory.decodeStream(mActivity.getAssets().open("image/fukuron.png"));
+            ekuron = BitmapFactory.decodeStream(mActivity.getAssets().open("image/ekuron.png"));
         } catch (IOException e) {
             e.printStackTrace();
             return null;
         }
-
-        // プリファレンスから倍率を読み込む
-        SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(mActivity);
-        float magnification = Float.parseFloat(sp.getString("size", DEFAULT_MAGNIFICATION));
 
         // 検出した顔をフクロン画像に置き換える
         Canvas canvas = new Canvas(baseBitmap);
@@ -111,7 +118,15 @@ public class FaceDetectorAsyncTask extends AsyncTask<Void, Void, Bitmap> {
                 r.right = midPoint.x + eyesDistance * magnification;
                 r.bottom = midPoint.y + eyesDistance * magnification;
 
-                Bitmap temp = Bitmap.createScaledBitmap(fukuron, (int) r.width(), (int) r.height(), false);
+                Bitmap temp;
+                switch ((int) (Math.random() * 100)) {
+                    case EKURON:
+                        temp = Bitmap.createScaledBitmap(ekuron, (int) r.width(), (int) r.height(), false);
+                        break;
+                    default:
+                        temp = Bitmap.createScaledBitmap(fukuron, (int) r.width(), (int) r.height(), false);
+                        break;
+                }
                 canvas.drawBitmap(temp, r.left, r.top, null);
             }
         }
