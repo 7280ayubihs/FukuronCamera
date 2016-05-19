@@ -25,10 +25,11 @@ import java.util.Locale;
 
 public class FaceDetectorAsyncTask extends AsyncTask<Void, Void, Bitmap> {
 
+    private static final int EKURON = 2;
+    private static final int JEXUMA = 3;
+
     /** android.util.Log class 用の tag */
     private static final String TAG = FaceDetectorAsyncTask.class.getSimpleName();
-
-    private static final int EKURON = 2;
 
     /** フクロン画像の倍率のデフォルト値 */
     private static final String DEFAULT_MAGNIFICATION = "3.0";
@@ -96,9 +97,11 @@ public class FaceDetectorAsyncTask extends AsyncTask<Void, Void, Bitmap> {
         // フクロン画像を読み込む
         Bitmap fukuron;
         Bitmap ekuron;
+        Bitmap jexuma;
         try {
             fukuron = BitmapFactory.decodeStream(mActivity.getAssets().open("image/fukuron.png"));
             ekuron = BitmapFactory.decodeStream(mActivity.getAssets().open("image/ekuron.png"));
+            jexuma = BitmapFactory.decodeStream(mActivity.getAssets().open("image/jexuma.png"));
         } catch (IOException e) {
             e.printStackTrace();
             return null;
@@ -122,6 +125,9 @@ public class FaceDetectorAsyncTask extends AsyncTask<Void, Void, Bitmap> {
                 switch ((int) (Math.random() * 100)) {
                     case EKURON:
                         temp = Bitmap.createScaledBitmap(ekuron, (int) r.width(), (int) r.height(), false);
+                        break;
+                    case JEXUMA:
+                        temp = Bitmap.createScaledBitmap(jexuma, (int) r.width(), (int) r.height(), false);
                         break;
                     default:
                         temp = Bitmap.createScaledBitmap(fukuron, (int) r.width(), (int) r.height(), false);
