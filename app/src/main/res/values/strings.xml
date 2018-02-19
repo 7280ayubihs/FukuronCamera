@@ -22,7 +22,9 @@
     <string name="settings">"設定"</string>
     <string name="default_summary">"未設定"</string>
     <string name="face_detector_dialog_message">"フクロン中..."</string>
-
+    <string name="permissions_error_dialog_title">アプリを終了します</string>
+    <string name="permissions_error_dialog_message">パーミッションが付与されない場合、このアプリはご利用になれません</string>
+    <string name="permissions_error_dialog_positive_button_text">OK</string>
 
     <!-- Preference 'size_of_fukuron' -->
     <string name="size_of_fukuron_key">"size_of_fukuron"</string>

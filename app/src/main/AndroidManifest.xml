@@ -10,24 +10,15 @@
         android:icon="@mipmap/ic_fukuron"
         android:label="@string/application_label"
         android:supportsRtl="true"
-        android:theme="@style/AppTheme"
-        android:screenOrientation="landscape">
-        <activity
-            android:name=".MainActivity"
-            android:label="@string/activity_label"/>
+        android:theme="@style/AppTheme">
         <activity
             android:name=".CameraActivity"
-            android:label="@string/activity_label"
-            android:screenOrientation="landscape">
+            android:label="@string/activity_label">
             <intent-filter android:label="@string/intent_filter_label">
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity
-            android:name=".ImageViewActivity"
-            android:label="@string/activity_label"
-            android:screenOrientation="landscape"/>
         <activity
             android:name=".SettingsActivity"
             android:label="設定"

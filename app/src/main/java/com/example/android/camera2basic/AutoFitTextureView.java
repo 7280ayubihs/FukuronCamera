@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package jp.co.jex.fukuroncamera;
+package com.example.android.camera2basic;
 
 import android.content.Context;
 import android.util.AttributeSet;

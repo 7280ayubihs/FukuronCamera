@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+
     <ListPreference
         android:key="@string/size_of_fukuron_key"
         android:title="@string/size_of_fukuron_title"
@@ -13,4 +14,5 @@
         android:entries="@array/number_of_fukuron_entries"
         android:entryValues="@array/number_of_fukuron_entry_values"
         android:defaultValue="@string/number_of_fukuron_entries_normal"/>
+
 </PreferenceScreen>
