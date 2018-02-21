@@ -5,6 +5,7 @@ import android.app.Activity;
 import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.content.res.Configuration;
 import android.graphics.Bitmap;
@@ -648,5 +649,10 @@ public class CameraActivity extends Activity
         } catch (CameraAccessException e) {
             e.printStackTrace();
         }
+    }
+
+    @OnClick(R.id.imageButtonSettings)
+    void OnClickImageButtonSettings() {
+        startActivity(new Intent(this, SettingsActivity.class));
     }
 }

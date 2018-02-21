@@ -21,8 +21,7 @@
         </activity>
         <activity
             android:name=".SettingsActivity"
-            android:label="設定"
-            android:screenOrientation="landscape"/>
+            android:label="設定"/>
     </application>
 
 </manifest>

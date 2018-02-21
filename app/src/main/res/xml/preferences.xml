@@ -1,18 +1,24 @@
 <?xml version="1.0" encoding="utf-8"?>
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
 
-    <ListPreference
-        android:key="@string/size_of_fukuron_key"
-        android:title="@string/size_of_fukuron_title"
-        android:entries="@array/size_of_fukuron_entries"
-        android:entryValues="@array/size_of_fukuron_entry_values"
-        android:defaultValue="@string/size_of_fukuron_entries_medium"/>
+    <PreferenceCategory android:title="フクロンの設定">
 
-    <ListPreference
-        android:key="@string/number_of_fukuron_key"
-        android:title="@string/number_of_fukuron_title"
-        android:entries="@array/number_of_fukuron_entries"
-        android:entryValues="@array/number_of_fukuron_entry_values"
-        android:defaultValue="@string/number_of_fukuron_entries_normal"/>
+        <ListPreference
+            android:defaultValue="@string/size_of_fukuron_entries_medium"
+            android:entries="@array/size_of_fukuron_entries"
+            android:entryValues="@array/size_of_fukuron_entry_values"
+            android:key="@string/size_of_fukuron_key"
+            android:summary="%s"
+            android:title="@string/size_of_fukuron_title"/>
+
+        <ListPreference
+            android:defaultValue="@string/number_of_fukuron_entries_normal"
+            android:entries="@array/number_of_fukuron_entries"
+            android:entryValues="@array/number_of_fukuron_entry_values"
+            android:key="@string/number_of_fukuron_key"
+            android:summary="%s"
+            android:title="@string/number_of_fukuron_title"/>
+
+    </PreferenceCategory>
 
 </PreferenceScreen>
