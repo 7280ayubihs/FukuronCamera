@@ -3,7 +3,6 @@ package jp.co.jex.fukuroncamera;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.preference.EditTextPreference;
-import android.preference.ListPreference;
 import android.preference.PreferenceFragment;
 import android.support.annotation.Nullable;
 import android.widget.ListAdapter;
@@ -43,10 +42,6 @@ public class SettingsFragment extends PreferenceFragment {
             if (item instanceof EditTextPreference) {
                 EditTextPreference editTextPreference = (EditTextPreference) item;
                 editTextPreference.setSummary(editTextPreference.getText() == null ? "" : editTextPreference.getText());
-            }
-            if (item instanceof ListPreference) {
-                ListPreference listPreference = (ListPreference) item;
-                // なにもしない
             }
         }
     }

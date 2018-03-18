@@ -15,6 +15,8 @@ import android.os.AsyncTask;
 import android.os.Environment;
 import android.preference.PreferenceManager;
 import android.provider.MediaStore;
+import android.view.Gravity;
+import android.widget.Toast;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -23,6 +25,9 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Locale;
 
+/**
+ *
+ */
 public class FaceDetectorAsyncTask extends AsyncTask<Void, Void, Bitmap> {
 
     private static final int EKURON = 2;
@@ -31,16 +36,13 @@ public class FaceDetectorAsyncTask extends AsyncTask<Void, Void, Bitmap> {
     /** android.util.Log class 用の tag */
     private static final String TAG = FaceDetectorAsyncTask.class.getSimpleName();
 
-    /** フクロン画像の倍率のデフォルト値 */
-    private static final String DEFAULT_MAGNIFICATION = "3.0";
-
     /** プログレスダイアログを表示する Activity */
     private Activity mActivity;
 
     /** プログレスダイアログに表示するメッセージ */
     private String mMessage;
 
-    /** プログレスダイアログ */
+   /** プログレスダイアログ */
     private ProgressDialog mProgressDialog;
 
     /** 処理完了後のコールバック */
@@ -72,9 +74,12 @@ public class FaceDetectorAsyncTask extends AsyncTask<Void, Void, Bitmap> {
     @Override
     protected void onPreExecute() {
         super.onPreExecute();
-        mProgressDialog = new ProgressDialog(mActivity);
-        mProgressDialog.setMessage(mMessage);
-        mProgressDialog.show();
+//        mProgressDialog = new ProgressDialog(mActivity);
+//        mProgressDialog.setMessage(mMessage);
+//        mProgressDialog.show();
+        Toast toast = Toast.makeText(mActivity, mMessage, Toast.LENGTH_LONG);
+        toast.setGravity(Gravity.CENTER, 0, 0);
+        toast.show();
     }
 
     @Override
@@ -87,7 +92,9 @@ public class FaceDetectorAsyncTask extends AsyncTask<Void, Void, Bitmap> {
         float magnification = Float.parseFloat(sp.getString(
                 mActivity.getString(R.string.size_of_fukuron_key),
                 mActivity.getString(R.string.size_of_fukuron_default_value)));
-        int num = 8;
+        int num = Integer.parseInt(sp.getString(
+                mActivity.getString(R.string.number_of_fukuron_key),
+                mActivity.getString(R.string.number_of_fukuron_default_value)));
 
         // 顔認識開始
         FaceDetector.Face faces[] = new FaceDetector.Face[num];
@@ -143,9 +150,9 @@ public class FaceDetectorAsyncTask extends AsyncTask<Void, Void, Bitmap> {
     protected void onPostExecute(Bitmap bitmap) {
         super.onPostExecute(bitmap);
         saveBitmap(bitmap);
-        if (mProgressDialog.isShowing()) {
-            mProgressDialog.dismiss();
-        }
+//        if (mProgressDialog.isShowing()) {
+//            mProgressDialog.dismiss();
+//        }
         mProcessFinishListener.onProcessFinish(bitmap);
     }
 

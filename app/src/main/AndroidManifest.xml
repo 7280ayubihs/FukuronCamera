@@ -12,16 +12,12 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity
-            android:name=".CameraActivity"
-            android:label="@string/activity_label">
+            android:name=".CameraActivity" android:label="@string/activity_label">
             <intent-filter android:label="@string/intent_filter_label">
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity
-            android:name=".SettingsActivity"
-            android:label="設定"/>
+        <activity android:name=".SettingsActivity" android:label="設定"/>
     </application>
-
 </manifest>
