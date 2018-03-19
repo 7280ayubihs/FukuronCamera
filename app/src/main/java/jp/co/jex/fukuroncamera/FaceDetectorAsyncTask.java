@@ -1,7 +1,6 @@
 package jp.co.jex.fukuroncamera;
 
 import android.app.Activity;
-import android.app.ProgressDialog;
 import android.content.ContentResolver;
 import android.content.ContentValues;
 import android.content.SharedPreferences;
@@ -15,8 +14,6 @@ import android.os.AsyncTask;
 import android.os.Environment;
 import android.preference.PreferenceManager;
 import android.provider.MediaStore;
-import android.view.Gravity;
-import android.widget.Toast;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -39,12 +36,6 @@ public class FaceDetectorAsyncTask extends AsyncTask<Void, Void, Bitmap> {
     /** プログレスダイアログを表示する Activity */
     private Activity mActivity;
 
-    /** プログレスダイアログに表示するメッセージ */
-    private String mMessage;
-
-   /** プログレスダイアログ */
-    private ProgressDialog mProgressDialog;
-
     /** 処理完了後のコールバック */
     private ProcessFinishListener mProcessFinishListener;
 
@@ -54,12 +45,10 @@ public class FaceDetectorAsyncTask extends AsyncTask<Void, Void, Bitmap> {
     /***
      * コンストラクタ
      * @param activity プログレスダイアログを表示する Activity
-     * @param message プログレスダイアログに表示するメッセージ
      * @param bitmap 処理する Bitmap
      */
-    public FaceDetectorAsyncTask(Activity activity, String message, Bitmap bitmap) {
+    public FaceDetectorAsyncTask(Activity activity, Bitmap bitmap) {
         mActivity = activity;
-        mMessage = message;
         mBitmap = bitmap;
     }
 
@@ -74,12 +63,6 @@ public class FaceDetectorAsyncTask extends AsyncTask<Void, Void, Bitmap> {
     @Override
     protected void onPreExecute() {
         super.onPreExecute();
-//        mProgressDialog = new ProgressDialog(mActivity);
-//        mProgressDialog.setMessage(mMessage);
-//        mProgressDialog.show();
-        Toast toast = Toast.makeText(mActivity, mMessage, Toast.LENGTH_LONG);
-        toast.setGravity(Gravity.CENTER, 0, 0);
-        toast.show();
     }
 
     @Override
@@ -150,9 +133,6 @@ public class FaceDetectorAsyncTask extends AsyncTask<Void, Void, Bitmap> {
     protected void onPostExecute(Bitmap bitmap) {
         super.onPostExecute(bitmap);
         saveBitmap(bitmap);
-//        if (mProgressDialog.isShowing()) {
-//            mProgressDialog.dismiss();
-//        }
         mProcessFinishListener.onProcessFinish(bitmap);
     }
 

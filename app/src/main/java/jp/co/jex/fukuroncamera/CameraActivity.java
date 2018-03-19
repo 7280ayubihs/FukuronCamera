@@ -1,7 +1,6 @@
 package jp.co.jex.fukuroncamera;
 
 import android.Manifest;
-import android.app.Activity;
 import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -30,6 +29,7 @@ import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.v4.app.FragmentActivity;
 import android.util.Log;
 import android.util.Size;
 import android.util.SparseIntArray;
@@ -45,7 +45,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
-public class CameraActivity extends Activity
+public class CameraActivity extends FragmentActivity
         implements ImageReader.OnImageAvailableListener, FaceDetectorAsyncTask.ProcessFinishListener {
 
     /**
@@ -124,6 +124,11 @@ public class CameraActivity extends Activity
     private ImageReader mImageReader;
 
     /**
+     * プログレスダイアログ
+     */
+    private ProgressDialogFragment mProgressDialogFragment = null;
+
+    /**
      *{@link #mTextureView} から画像を取得するためのコールバック
      */
     @Override
@@ -135,8 +140,12 @@ public class CameraActivity extends Activity
         Bitmap bitmap = BitmapFactory.decodeByteArray(bytes, 0, bytes.length);
         image.close();
 
+        // プログレスダイアログを開始
+        mProgressDialogFragment = ProgressDialogFragment.newInstance(getString(R.string.face_detector_dialog_message));
+        mProgressDialogFragment.show(getSupportFragmentManager(), ProgressDialogFragment.class.getSimpleName());
+
         // 顔認識処理をバックグラウンドで実行
-        FaceDetectorAsyncTask task = new FaceDetectorAsyncTask(this, getString(R.string.face_detector_dialog_message), bitmap);
+        FaceDetectorAsyncTask task = new FaceDetectorAsyncTask(this, bitmap);
         task.setOnProcessFinishListener(this);
         task.execute();
     }
@@ -146,6 +155,10 @@ public class CameraActivity extends Activity
      */
     @Override
     public void onProcessFinish(Bitmap bitmap) {
+        if (mProgressDialogFragment != null) {
+            mProgressDialogFragment.dismiss();
+            mProgressDialogFragment = null;
+        }
         createImagePreviewDialog(bitmap).show();
     }
 
@@ -213,6 +226,7 @@ public class CameraActivity extends Activity
         }
 
         private void process(CaptureResult result) {
+            //Log.i(TAG, "mState=" + mState + ": mCameraCaptureSessionCaptureCallback.process()");
             switch (mState) {
                 case STATE_PREVIEW: {
                     // なにもしない。
@@ -221,12 +235,13 @@ public class CameraActivity extends Activity
                 case STATE_WAITING_LOCK: {
                     Integer afState = result.get(CaptureResult.CONTROL_AF_STATE);
                     if (afState == null) {
+                        mState = CameraState.STATE_PICTURE_TAKEN;
                         captureStillPicture();
                     } else if (CaptureResult.CONTROL_AF_STATE_FOCUSED_LOCKED == afState || CaptureResult.CONTROL_AF_STATE_NOT_FOCUSED_LOCKED == afState) {
                         // CONTROL_AE_STATE can be null on some devices
                         Integer aeState = result.get(CaptureResult.CONTROL_AE_STATE);
                         if (aeState == null || aeState == CaptureResult.CONTROL_AE_STATE_CONVERGED) {
-                            mState = CameraActivity.CameraState.STATE_PICTURE_TAKEN;
+                            mState = CameraState.STATE_PICTURE_TAKEN;
                             captureStillPicture();
                         } else {
                             runPrecaptureSequence();
@@ -238,7 +253,7 @@ public class CameraActivity extends Activity
                     // CONTROL_AE_STATE can be null on some devices
                     Integer aeState = result.get(CaptureResult.CONTROL_AE_STATE);
                     if (aeState == null || aeState == CaptureResult.CONTROL_AE_STATE_PRECAPTURE || aeState == CaptureRequest.CONTROL_AE_STATE_FLASH_REQUIRED) {
-                        mState = CameraActivity.CameraState.STATE_WAITING_NON_PRECAPTURE;
+                        mState = CameraState.STATE_WAITING_NON_PRECAPTURE;
                     }
                     break;
                 }
@@ -246,7 +261,7 @@ public class CameraActivity extends Activity
                     // CONTROL_AE_STATE can be null on some devices
                     Integer aeState = result.get(CaptureResult.CONTROL_AE_STATE);
                     if (aeState == null || aeState != CaptureResult.CONTROL_AE_STATE_PRECAPTURE) {
-                        mState = CameraActivity.CameraState.STATE_PICTURE_TAKEN;
+                        mState = CameraState.STATE_PICTURE_TAKEN;
                         captureStillPicture();
                     }
                     break;
@@ -573,7 +588,7 @@ public class CameraActivity extends Activity
             // This is how to tell the camera to lock focus.
             mPreviewRequestBuilder.set(CaptureRequest.CONTROL_AF_TRIGGER, CameraMetadata.CONTROL_AF_TRIGGER_START);
             // Tell #mCaptureCallback to wait for the lock.
-            mState = CameraActivity.CameraState.STATE_WAITING_LOCK;
+            mState = CameraState.STATE_WAITING_LOCK;
             mCameraCaptureSession.capture(mPreviewRequestBuilder.build(), mCameraCaptureSessionCaptureCallback, null);
         } catch (CameraAccessException e) {
             e.printStackTrace();
@@ -589,7 +604,7 @@ public class CameraActivity extends Activity
             // This is how to tell the camera to trigger.
             mPreviewRequestBuilder.set(CaptureRequest.CONTROL_AE_PRECAPTURE_TRIGGER, CaptureRequest.CONTROL_AE_PRECAPTURE_TRIGGER_START);
             // Tell #mCaptureCallback to wait for the precapture sequence to be set.
-            mState = CameraActivity.CameraState.STATE_WAITING_PRECAPTURE;
+            mState = CameraState.STATE_WAITING_PRECAPTURE;
             mCameraCaptureSession.capture(mPreviewRequestBuilder.build(), mCameraCaptureSessionCaptureCallback, null);
         } catch (CameraAccessException e) {
             e.printStackTrace();
@@ -643,7 +658,7 @@ public class CameraActivity extends Activity
             mPreviewRequestBuilder.set(CaptureRequest.CONTROL_AE_MODE, CaptureRequest.CONTROL_AE_MODE_ON_AUTO_FLASH);
             mCameraCaptureSession.capture(mPreviewRequestBuilder.build(), mCameraCaptureSessionCaptureCallback, null);
             // After this, the camera will go back to the normal state of preview.
-            mState = CameraActivity.CameraState.STATE_PREVIEW;
+            mState = CameraState.STATE_PREVIEW;
             mCameraCaptureSession.setRepeatingRequest(mPreviewRequest, mCameraCaptureSessionCaptureCallback, null);
 
         } catch (CameraAccessException e) {
